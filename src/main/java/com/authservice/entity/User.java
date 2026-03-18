@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,13 +28,9 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String role;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    // ─── NEW FIELDS ───────────────────────────────────────────
+    private Role role;
 
     @Column(name = "failed_attempts", nullable = false)
     @Builder.Default
@@ -47,6 +42,9 @@ public class User {
 
     @Column(name = "lock_time")
     private LocalDateTime lockTime;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
