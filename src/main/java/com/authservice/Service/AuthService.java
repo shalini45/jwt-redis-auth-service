@@ -4,6 +4,7 @@ import com.authservice.dto.AuthResponse;
 import com.authservice.dto.LoginRequest;
 import com.authservice.dto.RegisterRequest;
 import com.authservice.entity.User;
+import com.authservice.entity.Role;
 import com.authservice.Exception.CustomException;
 import com.authservice.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,7 @@ public class AuthService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role("USER")
+                .role(Role.USER)
                 .build();
 
         userRepository.save(user);
@@ -70,7 +71,6 @@ public class AuthService {
                 .build();
     }
 
-   // Update login method
     public AuthResponse login(LoginRequest request, String ipAddress) {
 
     // 1. Check IP rate limit
