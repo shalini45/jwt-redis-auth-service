@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.authservice.dto.ForgotPasswordRequest;
+import com.authservice.dto.ResetPasswordRequest;
+import com.authservice.Service.PasswordResetService;
+
 import java.util.Map;
 
 @RestController
@@ -19,6 +23,9 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+
+    private final PasswordResetService passwordResetService;
+
 
     // ─── Helper to get IP ─────────────────────────────────────
     private String getClientIP(HttpServletRequest request) {
@@ -65,4 +72,25 @@ public class AuthController {
             "service", "Auth Service"
         ));
     }
+
+    // ─── FORGOT PASSWORD ─────────────────────────────────────
+@PostMapping("/forgot-password")
+public ResponseEntity<Map<String, String>> forgotPassword(
+        @Valid @RequestBody ForgotPasswordRequest request) {
+    String message = passwordResetService
+                        .forgotPassword(request.getEmail());
+    return ResponseEntity.ok(Map.of("message", message));
+}
+
+// ─── RESET PASSWORD ──────────────────────────────────────
+@PostMapping("/reset-password")
+public ResponseEntity<Map<String, String>> resetPassword(
+        @Valid @RequestBody ResetPasswordRequest request) {
+    String message = passwordResetService.resetPassword(
+        request.getEmail(),
+        request.getOtp(),
+        request.getNewPassword()
+    );
+    return ResponseEntity.ok(Map.of("message", message));
+}
 }
