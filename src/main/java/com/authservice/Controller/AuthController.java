@@ -163,4 +163,15 @@ public class AuthController {
             "service", "Auth Service"
         ));
     }
+
+    @GetMapping("/api/auth/redis-test")
+public ResponseEntity<String> testRedis() {
+    try {
+        redisTemplate.opsForValue().set("test-key", "test-value");
+        String val = redisTemplate.opsForValue().get("test-key");
+        return ResponseEntity.ok("Redis OK: " + val);
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body("Redis FAILED: " + e.getMessage());
+    }
+}
 }
